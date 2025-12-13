@@ -79,24 +79,44 @@ const closeBtn = document.getElementById('closeBtn');
 const box5Link = "https://luisfernando2025xt.github.io/xmas-mystery-box/";
 const box5Codes = ["ABC123","XYZ789","LMN456","PL55MN88","QW11ER22","GH12JK34","RT56UV78","YZ90AB12","CD34EF56","MN78OP90"];
 
-function getRandomCode(){
-  const key = 'box5ChosenCode';
-  let code = localStorage.getItem(key);
-  if(!code){
-    code = box5Codes[Math.floor(Math.random()*box5Codes.length)];
-    localStorage.setItem(key, code);
+function getRandomCodes(){
+  // Keys in localStorage
+  const keyUser = 'box5UserCode';
+  const keyLoved = 'box5LovedCode';
+
+  // Retrieve codes if already stored
+  let codeUser = localStorage.getItem(keyUser);
+  let codeLoved = localStorage.getItem(keyLoved);
+
+  if(!codeUser || !codeLoved){
+    // Randomly pick two DIFFERENT codes
+    let availableCodes = [...box5Codes];
+    codeUser = availableCodes.splice(Math.floor(Math.random()*availableCodes.length), 1)[0];
+    codeLoved = availableCodes[Math.floor(Math.random()*availableCodes.length)];
+    
+    // Store them
+    localStorage.setItem(keyUser, codeUser);
+    localStorage.setItem(keyLoved, codeLoved);
   }
-  return code;
+
+  return {codeUser, codeLoved};
 }
 
 box5.addEventListener('click', ()=>{
-  const code = getRandomCode();
-  openViewer({title:"Box 5 - Código de acceso", url: box5Link, code});
+  const {codeUser, codeLoved} = getRandomCodes();
+  openViewer({
+    title: "Box 5 - Cartas de Santa",
+    url: box5Link,
+    codeUser,
+    codeLoved
+  });
 });
 
-function openViewer({title,url,code=null}){
+function openViewer({title,url,codeUser=null,codeLoved=null}){
   viewerTitle.textContent = title;
-  viewerFooter.textContent = code ? `Código revelado: ${code}` : '';
+  viewerFooter.innerHTML = codeUser && codeLoved 
+    ? `Carta para ti: ${codeUser} <br> Carta para tu ser querido: ${codeLoved}` 
+    : '';
   viewerOpenNew.style.display = 'inline-block';
   viewerOpenNew.href = url;
   viewerBody.innerHTML = `<iframe src="${url}" allow="autoplay; fullscreen" loading="lazy"></iframe>`;
