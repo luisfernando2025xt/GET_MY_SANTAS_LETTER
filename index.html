@@ -22,6 +22,28 @@
   h1{font-family:"Playfair Display",serif;font-weight:700;font-size:72px;color:var(--gold);text-shadow:0 6px 24px rgba(240,200,75,0.08)}
   .instructions{max-width:980px;text-align:center;padding:34px;border-radius:18px;border:1px solid rgba(240,200,75,0.06);font-size:20px;color:#e9e6e0}
 
+  .promo{
+    max-width:980px;
+    text-align:center;
+    padding:24px;
+    border-radius:18px;
+    border:1px solid rgba(240,200,75,0.06);
+    font-size:18px;
+    color:#e9e6e0;
+    background:rgba(255,255,255,0.03);
+    margin-top:28px;
+  }
+  .promo a.button{
+    display:inline-block;
+    padding:10px 18px;
+    margin:6px;
+    background:var(--gold);
+    color:#111;
+    font-weight:700;
+    border-radius:12px;
+    text-decoration:none;
+  }
+
   .main-boxes{display:flex;justify-content:center;align-items:center}
   .box-container{position:relative;width:190px;height:190px;display:flex;align-items:center;justify-content:center}
   .main-box{width:100%;height:100%;border-radius:16px;border:3px solid rgba(240,200,75,0.95);background: linear-gradient(145deg,#2a2a2a,#151515);display:flex;align-items:center;justify-content:center;color:var(--gold);font-weight:700;font-size:26px;cursor:pointer}
@@ -34,12 +56,9 @@
   .viewer-controls{display:flex;gap:10px;align-items:center}
   .open-new{background:var(--glass);padding:8px 12px;border-radius:10px;color:var(--gold);border:1px solid rgba(255,255,255,0.03)}
   .close-btn{cursor:pointer;font-size:22px;color:var(--gold);padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);background:transparent}
-  .viewer-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px;gap:12px}
-  .viewer-body iframe{width:100%;height:60%;border:0;background:#000}
-  .viewer-footer{padding:12px 18px;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column;gap:6px}
-
-  .extra-codes{margin-top:12px;padding:12px;border:1px solid rgba(240,200,75,0.3);border-radius:12px;background:rgba(240,200,75,0.05);color:#fff;font-size:16px}
-  .extra-codes strong{color:var(--gold)}
+  .viewer-body{flex:1;display:flex;align-items:center;justify-content:center;padding:12px}
+  .viewer-body iframe{width:100%;height:100%;border:0;background:#000}
+  .viewer-footer{padding:12px 18px;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center}
 </style>
 </head>
 <body>
@@ -47,6 +66,15 @@
   <h1>Mystery Box 2025</h1>
   <div class="instructions">
     Use a device in dark mode with 100% brightness. Be in a completely dark or very dim room. Any other setting will ruin the experience.
+  </div>
+
+  <!-- Promo Section -->
+  <div class="promo">
+    🎁 Want extra codes for yourself or a loved one? Contact Santa’s Ambassador via WhatsApp: 
+    <a href="https://wa.me/51972552408" target="_blank" style="color:var(--gold);font-weight:600;">+51 972 552 408</a>.<br><br>
+    Pricing: 1 code = $2, 3 codes = $5, 5 codes = $8.<br><br>
+    <a href="YOUR_BOOTN_LINK" target="_blank" class="button">Buy via Bootn</a>
+    <a href="YOUR_GUMROAD_LINK" target="_blank" class="button">Buy via Gumroad</a>
   </div>
 
   <div class="main-boxes">
@@ -66,14 +94,7 @@
       </div>
     </div>
     <div class="viewer-body" id="viewerBody"></div>
-    <div class="viewer-footer" id="viewerFooter">
-      <div class="extra-codes">
-        Want extra codes for yourself or your loved ones? Contact <strong>Santa’s ambassador</strong> on WhatsApp: <a href="https://wa.me/51972552408" style="color:#f0c84b;">+51 972 552 408</a><br>
-        Extra codes pricing: <br>
-        1 code = $2, 3 codes = $5, 5 codes = $8 <br>
-        Payment methods: Local Peru: Yape/Plin, International: Bank account: 018-000-004021747152-09
-      </div>
-    </div>
+    <div class="viewer-footer" id="viewerFooter"></div>
   </div>
 </div>
 
@@ -100,6 +121,7 @@ function getRandomCodes(){
     let availableCodes = [...box5Codes];
     codeUser = availableCodes.splice(Math.floor(Math.random()*availableCodes.length), 1)[0];
     codeLoved = availableCodes[Math.floor(Math.random()*availableCodes.length)];
+    
     localStorage.setItem(keyUser, codeUser);
     localStorage.setItem(keyLoved, codeLoved);
   }
@@ -120,7 +142,7 @@ box5.addEventListener('click', ()=>{
 function openViewer({title,url,codeUser=null,codeLoved=null}){
   viewerTitle.textContent = title;
   viewerFooter.innerHTML = codeUser && codeLoved 
-    ? `Carta para ti: <strong>${codeUser}</strong> <br> Carta para tu ser querido: <strong>${codeLoved}</strong>` 
+    ? `Carta para ti: ${codeUser} <br> Carta para tu ser querido: ${codeLoved}` 
     : '';
   viewerOpenNew.style.display = 'inline-block';
   viewerOpenNew.href = url;
