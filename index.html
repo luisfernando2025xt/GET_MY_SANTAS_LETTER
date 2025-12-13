@@ -42,8 +42,10 @@
     text-align:center;
   }
 
-  /* Countdown (ONLY ADDITION) */
+  /* COUNTDOWN (ONLY ADDITION) */
   .countdown{
+    margin-top:-40px;
+    margin-bottom:20px;
     font-size:clamp(18px,2.5vw,26px);
     font-weight:600;
     color:var(--gold);
@@ -123,7 +125,7 @@
 
   <h1>Santa´s Letter 2025</h1>
 
-  <!-- Countdown -->
+  <!-- COUNTDOWN -->
   <div class="countdown" id="countdown"></div>
 
   <div class="instructions">
@@ -146,12 +148,12 @@
 </div>
 
 <script>
-/* Countdown Logic (ONLY ADDITION) */
+/* COUNTDOWN LOGIC (ONLY ADDITION) */
 const countdownEl = document.getElementById("countdown");
 const targetDate = new Date("December 25, 2025 00:00:00").getTime();
 
 function updateCountdown(){
-  const now = new Date().getTime();
+  const now = Date.now();
   const diff = targetDate - now;
 
   if(diff <= 0){
@@ -164,8 +166,7 @@ function updateCountdown(){
   const minutes = Math.floor((diff / (1000 * 60)) % 60);
   const seconds = Math.floor((diff / 1000) % 60);
 
-  countdownEl.textContent =
-    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 }
 
 updateCountdown();
