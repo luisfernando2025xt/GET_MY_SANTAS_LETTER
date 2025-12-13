@@ -204,7 +204,7 @@
 
   <div class="main-boxes">
     <div class="box-container">
-      <div class="main-box" id="box5">Box 5</div>
+      <div class="main-box" id="box5">🎁 Santa’s Letter</div>
     </div>
   </div>
 
@@ -223,7 +223,7 @@
     <div class="viewer-header">
       <div class="viewer-title" id="viewerTitle">Contenido</div>
       <div class="viewer-controls">
-        <a id="viewerOpenNew" class="open-new" href="#" target="_blank" style="display:none">Abrir en nueva pestaña</a>
+        <a id="viewerOpenNew" class="open-new" href="#" target="_blank" style="display:none">Open in New Tab</a>
         <button id="closeBtn" class="close-btn">✕</button>
       </div>
     </div>
@@ -266,7 +266,7 @@ function getRandomCodes(){
 box5.addEventListener('click', ()=>{
   const {codeUser, codeLoved} = getRandomCodes();
   openViewer({
-    title: "Box 5 - Cartas de Santa",
+    title: "Your Santa Letter",
     url: box5Link,
     codeUser,
     codeLoved
@@ -276,7 +276,7 @@ box5.addEventListener('click', ()=>{
 function openViewer({title,url,codeUser=null,codeLoved=null}){
   viewerTitle.textContent = title;
   viewerFooter.innerHTML = codeUser && codeLoved 
-    ? `Carta para ti: ${codeUser} <br> Carta para tu ser querido: ${codeLoved}` 
+    ? `Letter for You: ${codeUser} <br> Letter for Your Loved One: ${codeLoved}` 
     : '';
   viewerOpenNew.style.display = 'inline-block';
   viewerOpenNew.href = url;
