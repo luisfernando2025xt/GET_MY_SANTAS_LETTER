@@ -33,23 +33,13 @@
     gap:84px;
   }
 
+  /* Responsive H1 */
   h1{
     font-family:"Playfair Display",serif;
     font-weight:700;
-    font-size: clamp(44px, 7vw, 84px);
+    font-size: clamp(44px, 7vw, 84px); /* scales between 48px and 100px */
     color:var(--gold);
     text-shadow:0 6px 24px rgba(240,200,75,0.08);
-    text-align:center;
-  }
-
-  /* COUNTDOWN (ONLY ADDITION) */
-  .countdown{
-    margin-top:-40px;
-    margin-bottom:20px;
-    font-size:clamp(18px,2.5vw,26px);
-    font-weight:600;
-    color:var(--gold);
-    letter-spacing:1px;
     text-align:center;
   }
 
@@ -74,7 +64,6 @@
     background:rgba(255,255,255,0.03);
     margin-top:28px;
   }
-
   .promo a.button{
     display:inline-block;
     padding:10px 18px;
@@ -83,6 +72,7 @@
     color:#111;
     font-weight:700;
     border-radius:12px;
+    text-decoration:none;
     font-size:clamp(14px,1.5vw,16px);
   }
 
@@ -93,15 +83,14 @@
     flex-wrap:wrap;
     gap:24px;
   }
-
   .box-container{
+    position:relative;
     width:190px;
     height:190px;
     display:flex;
     align-items:center;
     justify-content:center;
   }
-
   .main-box{
     width:100%;
     height:100%;
@@ -116,18 +105,101 @@
     font-size:clamp(20px,2.5vw,26px);
     cursor:pointer;
   }
+
+  /* Modal styles */
+  .modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:linear-gradient(180deg, rgba(0,0,0,0.72), rgba(0,0,0,0.82));
+    backdrop-filter: blur(6px);
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+  }
+  .modal.show{display:flex}
+  .viewer{
+    width:100%;
+    max-width:1180px;
+    height:84vh;
+    background:#111;
+    border-radius:16px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .viewer-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 22px;
+    background:linear-gradient(90deg,#0f0f0f, #141414);
+  }
+  .viewer-title{
+    font-family:"Playfair Display",serif;
+    font-size:clamp(16px,2vw,20px);
+    color:var(--gold);
+    font-weight:700;
+  }
+  .viewer-controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .open-new{
+    background:var(--glass);
+    padding:8px 12px;
+    border-radius:10px;
+    color:var(--gold);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .close-btn{
+    cursor:pointer;
+    font-size:22px;
+    color:var(--gold);
+    padding:8px 12px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.02);
+    background:transparent;
+  }
+  .viewer-body{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px;
+  }
+  .viewer-body iframe{
+    width:100%;
+    height:100%;
+    border:0;
+    background:#000;
+  }
+  .viewer-footer{
+    padding:12px 18px;
+    color:var(--muted);
+    font-size:14px;
+    border-top:1px solid rgba(255,255,255,0.02);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  /* Responsive tweaks for small screens */
+  @media(max-width:480px){
+    .box-container{width:150px;height:150px;}
+    .main-box{font-size:clamp(16px,5vw,22px);}
+    .promo a.button{padding:8px 12px;font-size:14px;}
+    .instructions{padding:20px;}
+  }
 </style>
 </head>
-
 <body>
 <div class="wrap">
   <div class="year-tag">Santa in 2025</div>
-
-  <h1>Santa´s Letter 2025</h1>
-
-  <!-- COUNTDOWN -->
+<h1>Santa´s Letter 2025</h1>
   <div class="countdown" id="countdown"></div>
-
   <div class="instructions">
     Use a device in dark mode with 100% brightness. Be in a completely dark or very dim room. Any other setting will ruin the experience.
   </div>
@@ -138,40 +210,119 @@
     </div>
   </div>
 
+  <!-- Promo Section -->
   <div class="promo">
-    🎁 Want extra codes for yourself or a loved one? Contact Santa’s Ambassador via WhatsApp:
-    <a href="https://wa.me/51972552408" target="_blank" style="color:var(--gold);font-weight:600;">+51 972 552 408</a><br><br>
+    🎁 Want extra codes for yourself or a loved one? Contact Santa’s Ambassador via WhatsApp: 
+    <a href="https://wa.me/51972552408" target="_blank" style="color:var(--gold);font-weight:600;">+51 972 552 408</a>.<br><br>
     Pricing: 1 code = $2, 3 codes = $5, 5 codes = $8.<br><br>
     <a href="YOUR_BOOTN_LINK" target="_blank" class="button">Buy via Bootn</a>
     <a href="YOUR_GUMROAD_LINK" target="_blank" class="button">Buy via Gumroad</a>
   </div>
 </div>
 
+<div id="modal" class="modal" aria-hidden="true">
+  <div class="viewer">
+    <div class="viewer-header">
+      <div class="viewer-title" id="viewerTitle">Contenido</div>
+      <div class="viewer-controls">
+        <a id="viewerOpenNew" class="open-new" href="#" target="_blank" style="display:none">Open in New Tab</a>
+        <button id="closeBtn" class="close-btn">✕</button>
+      </div>
+    </div>
+    <div class="viewer-body" id="viewerBody"></div>
+    <div class="viewer-footer" id="viewerFooter"></div>
+  </div>
+</div>
+
 <script>
-/* COUNTDOWN LOGIC (ONLY ADDITION) */
-const countdownEl = document.getElementById("countdown");
-const targetDate = new Date("December 25, 2025 00:00:00").getTime();
+const box5 = document.getElementById('box5');
+const modal = document.getElementById('modal');
+const viewerBody = document.getElementById('viewerBody');
+const viewerTitle = document.getElementById('viewerTitle');
+const viewerFooter = document.getElementById('viewerFooter');
+const viewerOpenNew = document.getElementById('viewerOpenNew');
+const closeBtn = document.getElementById('closeBtn');
 
-function updateCountdown(){
-  const now = Date.now();
-  const diff = targetDate - now;
+const box5Link = "https://luisfernando2025xt.github.io/xmas-mystery-box/";
+const box5Codes = ["ABC123","XYZ789","LMN456","PL55MN88","QW11ER22","GH12JK34","RT56UV78","YZ90AB12","CD34EF56","MN78OP90"];
 
-  if(diff <= 0){
-    countdownEl.textContent = "🎄 Christmas is here";
-    return;
+function getRandomCodes(){
+  const keyUser = 'box5UserCode';
+  const keyLoved = 'box5LovedCode';
+
+  let codeUser = localStorage.getItem(keyUser);
+  let codeLoved = localStorage.getItem(keyLoved);
+
+  if(!codeUser || !codeLoved){
+    let availableCodes = [...box5Codes];
+    codeUser = availableCodes.splice(Math.floor(Math.random()*availableCodes.length), 1)[0];
+    codeLoved = availableCodes[Math.floor(Math.random()*availableCodes.length)];
+    
+    localStorage.setItem(keyUser, codeUser);
+    localStorage.setItem(keyLoved, codeLoved);
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-
-  countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  return {codeUser, codeLoved};
 }
 
-updateCountdown();
-setInterval(updateCountdown, 1000);
-</script>
+box5.addEventListener('click', ()=>{
+  const {codeUser, codeLoved} = getRandomCodes();
+  openViewer({
+    title: "Your Santa Letter",
+    url: box5Link,
+    codeUser,
+    codeLoved
+  });
+});
 
+function openViewer({title,url,codeUser=null,codeLoved=null}){
+  viewerTitle.textContent = title;
+  viewerFooter.innerHTML = codeUser && codeLoved 
+    ? `Letter for You: ${codeUser} <br> Letter for Your Loved One: ${codeLoved}` 
+    : '';
+  viewerOpenNew.style.display = 'inline-block';
+  viewerOpenNew.href = url;
+  viewerBody.innerHTML = `<iframe src="${url}" allow="autoplay; fullscreen" loading="lazy"></iframe>`;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+}
+
+closeBtn.addEventListener('click', ()=>{
+  modal.classList.remove('show');
+  viewerBody.innerHTML = '';
+  modal.setAttribute('aria-hidden','true');
+});
+
+modal.addEventListener('click', (ev)=>{
+  if(ev.target === modal){
+    modal.classList.remove('show');
+    viewerBody.innerHTML = '';
+    modal.setAttribute('aria-hidden','true');
+  }
+});
+  /* ===== COUNTDOWN CLOCK ===== */
+  const countdownEl = document.getElementById("countdown");
+  const targetDate = new Date("December 25, 2025 00:00:00").getTime();
+
+  function updateCountdown(){
+    const now = Date.now();
+    const diff = targetDate - now;
+
+    if(diff <= 0){
+      countdownEl.textContent = "🎄 Christmas is here";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+</script>
 </body>
 </html>
