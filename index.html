@@ -206,9 +206,26 @@
   <div class="year-tag">Santa in 2025</div>
 <h1>Santa´s Letter 2025</h1>
   <div class="countdown" id="countdown"></div>
-  <div class="instructions">
-    Use a device in dark mode with 100% brightness. Be in a completely dark or very dim room. Any other setting will ruin the experience.
-  </div>
+<div class="instructions">
+  Some people are still waiting for their letter.<br>
+  Help them receive it before the Christmas magic is over.<br><br>
+
+  <strong>Share the Magic</strong><br>
+
+  <a href="#"
+     onclick="shareWhatsApp(); return false;"
+     style="color:var(--gold);font-weight:600;">WhatsApp</a>
+  ·
+  <a href="https://twitter.com/intent/tweet?text=Santa%27s%20Letter%202025%20%E2%9C%A8%20Help%20someone%20receive%20their%20letter%20before%20the%20Christmas%20magic%20is%20over.%20%F0%9F%8E%84%20https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/"
+     target="_blank" style="color:var(--gold);font-weight:600;">X</a>
+  ·
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/"
+     target="_blank" style="color:var(--gold);font-weight:600;">Facebook</a>
+  ·
+  <a href="#"
+     onclick="navigator.clipboard.writeText('https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/'); alert('Link copied. Share it on Instagram DM or Story.'); return false;"
+     style="color:var(--gold);font-weight:600;">Instagram</a>
+</div>
 
   <div class="main-boxes">
     <div class="box-container">
@@ -329,6 +346,22 @@ modal.addEventListener('click', (ev)=>{
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
+  /* ===== WHATSAPP SHARE ===== */
+  function shareWhatsApp(){
+    const link = "https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/";
+    const message = "Santa's Letter 2025 ✨ Help someone receive their letter before the Christmas magic is over 🎄\n\n" + link;
+    const encoded = encodeURIComponent(message);
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if(isMobile){
+      window.open("https://wa.me/?text=" + encoded, "_blank");
+    } else {
+      navigator.clipboard.writeText(link);
+      alert("Link copied. Share it on WhatsApp.");
+    }
+  }
+
 </script>
 </body>
 </html>
