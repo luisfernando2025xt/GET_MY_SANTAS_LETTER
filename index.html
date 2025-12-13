@@ -292,6 +292,12 @@ function getRandomCodes(){
 }
 
 box5.addEventListener('click', ()=>{
+  // ===== Track click in GA4 =====
+  gtag('event', 'click_santa_letter', {
+    'event_category': 'Interaction',
+    'event_label': 'Box5 Santa Letter Click'
+  });
+
   const {codeUser, codeLoved} = getRandomCodes();
   openViewer({
     title: "Your Santa Letter",
@@ -364,6 +370,23 @@ modal.addEventListener('click', (ev)=>{
       alert("Link copied. Share it on WhatsApp.");
     }
   }
+
+// ===== Track visits from Gumroad =====
+if (window.location.search.includes('source=gumroad')) {
+  gtag('event', 'visit_from_gumroad', {
+    'event_category': 'Traffic Source',
+    'event_label': 'Gumroad'
+  });
+}
+const coffeeButton = document.querySelector('.promo a.button');
+if(coffeeButton){
+  coffeeButton.addEventListener('click', () => {
+    gtag('event', 'click_buy_coffee', {
+      'event_category': 'Monetization',
+      'event_label': 'Buy Santa a Coffee'
+    });
+  });
+}
 
 </script>
 </body>
