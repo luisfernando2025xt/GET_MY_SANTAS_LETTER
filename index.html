@@ -34,9 +34,12 @@
   .viewer-controls{display:flex;gap:10px;align-items:center}
   .open-new{background:var(--glass);padding:8px 12px;border-radius:10px;color:var(--gold);border:1px solid rgba(255,255,255,0.03)}
   .close-btn{cursor:pointer;font-size:22px;color:var(--gold);padding:8px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.02);background:transparent}
-  .viewer-body{flex:1;display:flex;align-items:center;justify-content:center;padding:12px}
-  .viewer-body iframe{width:100%;height:100%;border:0;background:#000}
-  .viewer-footer{padding:12px 18px;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.02);display:flex;justify-content:space-between;align-items:center}
+  .viewer-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:12px;gap:12px}
+  .viewer-body iframe{width:100%;height:60%;border:0;background:#000}
+  .viewer-footer{padding:12px 18px;color:var(--muted);font-size:14px;border-top:1px solid rgba(255,255,255,0.02);display:flex;flex-direction:column;gap:6px}
+
+  .extra-codes{margin-top:12px;padding:12px;border:1px solid rgba(240,200,75,0.3);border-radius:12px;background:rgba(240,200,75,0.05);color:#fff;font-size:16px}
+  .extra-codes strong{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -63,7 +66,14 @@
       </div>
     </div>
     <div class="viewer-body" id="viewerBody"></div>
-    <div class="viewer-footer" id="viewerFooter"></div>
+    <div class="viewer-footer" id="viewerFooter">
+      <div class="extra-codes">
+        Want extra codes for yourself or your loved ones? Contact <strong>Santa’s ambassador</strong> on WhatsApp: <a href="https://wa.me/51972552408" style="color:#f0c84b;">+51 972 552 408</a><br>
+        Extra codes pricing: <br>
+        1 code = $2, 3 codes = $5, 5 codes = $8 <br>
+        Payment methods: Local Peru: Yape/Plin, International: Bank account: 018-000-004021747152-09
+      </div>
+    </div>
   </div>
 </div>
 
@@ -80,21 +90,16 @@ const box5Link = "https://luisfernando2025xt.github.io/xmas-mystery-box/";
 const box5Codes = ["ABC123","XYZ789","LMN456","PL55MN88","QW11ER22","GH12JK34","RT56UV78","YZ90AB12","CD34EF56","MN78OP90"];
 
 function getRandomCodes(){
-  // Keys in localStorage
   const keyUser = 'box5UserCode';
   const keyLoved = 'box5LovedCode';
 
-  // Retrieve codes if already stored
   let codeUser = localStorage.getItem(keyUser);
   let codeLoved = localStorage.getItem(keyLoved);
 
   if(!codeUser || !codeLoved){
-    // Randomly pick two DIFFERENT codes
     let availableCodes = [...box5Codes];
     codeUser = availableCodes.splice(Math.floor(Math.random()*availableCodes.length), 1)[0];
     codeLoved = availableCodes[Math.floor(Math.random()*availableCodes.length)];
-    
-    // Store them
     localStorage.setItem(keyUser, codeUser);
     localStorage.setItem(keyLoved, codeLoved);
   }
@@ -115,7 +120,7 @@ box5.addEventListener('click', ()=>{
 function openViewer({title,url,codeUser=null,codeLoved=null}){
   viewerTitle.textContent = title;
   viewerFooter.innerHTML = codeUser && codeLoved 
-    ? `Carta para ti: ${codeUser} <br> Carta para tu ser querido: ${codeLoved}` 
+    ? `Carta para ti: <strong>${codeUser}</strong> <br> Carta para tu ser querido: <strong>${codeLoved}</strong>` 
     : '';
   viewerOpenNew.style.display = 'inline-block';
   viewerOpenNew.href = url;
