@@ -33,21 +33,20 @@
     gap:84px;
   }
 
-  /* Responsive H1 */
   h1{
     font-family:"Playfair Display",serif;
     font-weight:700;
-    font-size: clamp(44px, 7vw, 84px); /* scales between 48px and 100px */
+    font-size: clamp(44px, 7vw, 84px);
     color:var(--gold);
     text-shadow:0 6px 24px rgba(240,200,75,0.08);
     text-align:center;
   }
   .countdown{
-  color: var(--gold);
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-shadow: 0 4px 16px rgba(240,200,75,0.25);
-}
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 16px rgba(240,200,75,0.25);
+  }
 
   .instructions{
     max-width:980px;
@@ -112,7 +111,6 @@
     cursor:pointer;
   }
 
-  /* Modal styles */
   .modal{
     display:none;
     position:fixed;
@@ -192,7 +190,6 @@
     align-items:center;
   }
 
-  /* Responsive tweaks for small screens */
   @media(max-width:480px){
     .box-container{width:150px;height:150px;}
     .main-box{font-size:clamp(16px,5vw,22px);}
@@ -202,7 +199,6 @@
 </style>
 </head>
 <body>
-<!-- Language Selector -->
 <div style="position:sticky;top:0;background:black;padding:10px;z-index:999;text-align:right;">
     <select id="langSelect" style="padding:5px 10px;font-weight:600;border-radius:5px;background:#222;color:gold;border:1px solid gold;">
         <option value="EN">English</option>
@@ -211,7 +207,6 @@
     </select>
 </div>
 
-  
 <div class="wrap">
   <div class="year-tag">Santa in 2025</div>
 <h1>Santa´s Letter 2025</h1>
@@ -226,7 +221,7 @@
      onclick="shareWhatsApp(); return false;"
      style="color:var(--gold);font-weight:600;">WhatsApp</a>
   ·
-  <a href="https://twitter.com/intent/tweet?text=Santa%27s%20Letter%202025%20%E2%9C%A8%20Help%20someone%20receive%20their%20letter%20before%20the%20Christmas%20magic%20is%20over.%20%F0%9F%8E%84%20https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/"
+  <a href="https://twitter.com/intent/tweet?text=Santa%27s%20Letter%202025"
      target="_blank" style="color:var(--gold);font-weight:600;">X</a>
   ·
   <a href="https://www.facebook.com/sharer/sharer.php?u=https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/"
@@ -237,32 +232,16 @@
      style="color:var(--gold);font-weight:600;">Instagram</a>
 </div>
 
-<!-- <<< INSERT LANGUAGE + NAME BLOCK HERE >>> -->
 <div id="name-language-wrapper" style="margin-top:30px; text-align:center;">
-  <div id="language-section" style="margin-bottom:20px;">
-    <label for="langSelect" style="color:#f0c84b; font-weight:600; margin-right:10px;">
-      Choose your language:
-    </label>
-    <select id="langSelect" style="padding:6px 10px; border-radius:8px; border:none; font-weight:600;">
-      <option value="EN">English</option>
-      <option value="ES">Español</option>
-      <option value="DE">Deutsch</option>
-    </select>
-  </div>
-
-<div id="name-section">
   <input type="text" id="nameInput" placeholder="Enter your name" style="padding:8px 12px; border-radius:8px; border:none; width:200px;">
 </div>
 
+<div class="main-boxes">
+  <div class="box-container">
+    <div class="main-box" id="myLetterBtn">🎁 My Letter</div>
+  </div>
 </div>
 
-  <div class="main-boxes">
-    <div class="box-container">
-      <div class="main-box" id="box5">🎁 My Letter</div>
-    </div>
-  </div>
-
-  <!-- Promo Section -->
 <div class="promo">
   🎄 Your Santa letter is complete.<br><br>
 
@@ -290,177 +269,8 @@
 </div>
 
 <script>
-const box5 = document.getElementById('box5');
-const modal = document.getElementById('modal');
-const viewerBody = document.getElementById('viewerBody');
-const viewerTitle = document.getElementById('viewerTitle');
-const viewerFooter = document.getElementById('viewerFooter');
-const viewerOpenNew = document.getElementById('viewerOpenNew');
-const closeBtn = document.getElementById('closeBtn');
-
-// ===== LETTER CODES =====
-const box5Codes = ["ABC123","XYZ789","LMN456","PL55MN88","QW11ER22","GH12JK34","RT56UV78","YZ90AB12","CD34EF56","MN78OP90"];
-
-// ===== FUNCTION TO GENERATE LETTER =====
-async function startLetter() {
-  const name = document.getElementById("nameInput").value.trim();
-  const lang = document.getElementById("langSelect").value;
-
-  if (!name) {
-    alert(lang === 'ES' ? "¡Por favor ingresa tu nombre!" : lang === 'DE' ? "Bitte gib deinen Namen ein!" : "Please enter your name!");
-    return;
-  }
-
-  const code = box5Codes[Math.floor(Math.random()*box5Codes.length)];
-
-  const response = await fetch('letters.json');
-  const letters = await response.json();
-
-  if (!letters[code] || !letters[code][lang]) {
-    alert(lang === 'ES' ? "Lo sentimos, esta carta aún no está disponible en tu idioma." : lang === 'DE' ? "Entschuldigung, dieser Brief ist in deiner Sprache noch nicht verfügbar." : "Sorry, this letter is not available in your language yet.");
-    return;
-  }
-
-  const letterContent = letters[code][lang].map(paragraph => paragraph.replace("{name}", name)).join("<br><br>");
-
-  viewerTitle.textContent = lang === 'ES' ? "Tu Carta de Santa" : lang === 'DE' ? "Dein Weihnachtsbrief" : "Your Santa Letter";
-  viewerFooter.innerHTML = `Letter Code: ${code}`;
-  viewerBody.innerHTML = letterContent;
-  viewerOpenNew.style.display = "none";
-  modal.classList.add('show');
-  modal.setAttribute('aria-hidden', 'false');
-}
-
-// ===== OPEN MODAL =====
-box5.addEventListener('click', startLetter);
-
-closeBtn.addEventListener('click', ()=>{
-  modal.classList.remove('show');
-  viewerBody.innerHTML = '';
-  modal.setAttribute('aria-hidden','true');
-});
-
-modal.addEventListener('click', (ev)=>{
-  if(ev.target === modal){
-    modal.classList.remove('show');
-    viewerBody.innerHTML = '';
-    modal.setAttribute('aria-hidden','true');
-  }
-});
-
-// ===== COUNTDOWN CLOCK =====
-const countdownEl = document.getElementById("countdown");
-const targetDate = new Date("December 25, 2025 00:00:00").getTime();
-
-function updateCountdown(){
-  const now = Date.now();
-  const diff = targetDate - now;
-
-  if(diff <= 0){
-    countdownEl.textContent = "🎄 Christmas is here";
-    return;
-  }
-
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
-
-  countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-}
-
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-// ===== WHATSAPP SHARE =====
-function shareWhatsApp(){
-  const link = "https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/";
-  const message = "Santa's Letter 2025 ✨ Help someone receive their letter before the Christmas magic is over 🎄\n\n" + link;
-  const encoded = encodeURIComponent(message);
-
-  const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-
-  if(isMobile){
-    window.open("https://wa.me/?text=" + encoded, "_blank");
-  } else {
-    navigator.clipboard.writeText(link);
-    alert("Link copied. Share it on WhatsApp.");
-  }
-}
-
-// ===== STATIC TEXTS FOR LANGUAGES =====
-const texts = {
-  EN: {
-    yearTag: "Santa in 2025",
-    heading: "Santa's Letter 2025",
-    instructions: `
-      Some people are still waiting for their letter.<br>
-      Help them receive it before the Christmas magic is over.<br><br>
-      <strong>Share the Magic</strong><br>
-      <a href="#" onclick="shareWhatsApp(); return false;" style="color:var(--gold);font-weight:600;">WhatsApp</a> ·
-      <a href="https://twitter.com/intent/tweet?text=Santa%27s%20Letter%202025" target="_blank" style="color:var(--gold);font-weight:600;">X</a> ·
-      <a href="https://www.facebook.com/sharer/sharer.php?u=https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/" target="_blank" style="color:var(--gold);font-weight:600;">Facebook</a> ·
-      <a href="#" onclick="navigator.clipboard.writeText('https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/'); alert('Link copied. Share it on Instagram DM or Story.'); return false;" style="color:var(--gold);font-weight:600;">Instagram</a>
-    `,
-    namePlaceholder: "Enter your name",
-    promoText: `
-🎄 Your Santa letter is complete.<br><br>
-If this message brought a smile or a moment of warmth, you’re welcome to support the magic and help Santa keep delivering letters around the world.<br><br>
-<a href="https://legacybuilder35.gumroad.com/l/jgcdam" target="_blank" class="button">☕ Buy Santa a Coffee</a>
-`
-  },
-  ES: {
-    yearTag: "Santa en 2025",
-    heading: "Carta de Santa 2025",
-    instructions: `
-      Algunas personas todavía esperan su carta.<br>
-      Ayúdalos a recibirla antes de que termine la magia navideña.<br><br>
-      <strong>Comparte la Magia</strong><br>
-      <a href="#" onclick="shareWhatsApp(); return false;" style="color:var(--gold);font-weight:600;">WhatsApp</a> ·
-      <a href="https://twitter.com/intent/tweet?text=Carta%20de%20Santa%202025" target="_blank" style="color:var(--gold);font-weight:600;">X</a> ·
-      <a href="https://www.facebook.com/sharer/sharer.php?u=https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/" target="_blank" style="color:var(--gold);font-weight:600;">Facebook</a> ·
-      <a href="#" onclick="navigator.clipboard.writeText('https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/'); alert('Enlace copiado. Compártelo en Instagram DM o Historia.'); return false;" style="color:var(--gold);font-weight:600;">Instagram</a>
-    `,
-    namePlaceholder: "Ingresa tu nombre",
-    promoText: `
-🎄 Tu carta de Santa está completa.<br><br>
-Si este mensaje te hizo sonreír o sentir un momento de calidez, puedes apoyar la magia y ayudar a Santa a seguir entregando cartas alrededor del mundo.<br><br>
-<a href="https://legacybuilder35.gumroad.com/l/jgcdam" target="_blank" class="button">☕ Compra un café para Santa</a>
-`
-  },
-  DE: {
-    yearTag: "Weihnachtsmann 2025",
-    heading: "Brief vom Weihnachtsmann 2025",
-    instructions: `
-      Manche Leute warten noch auf ihren Brief.<br>
-      Hilf ihnen, ihn zu erhalten, bevor die Weihnachtsmagie vorbei ist.<br><br>
-      <strong>Teile die Magie</strong><br>
-      <a href="#" onclick="shareWhatsApp(); return false;" style="color:var(--gold);font-weight:600;">WhatsApp</a> ·
-      <a href="https://twitter.com/intent/tweet?text=Brief%20vom%20Weihnachtsmann%202025" target="_blank" style="color:var(--gold);font-weight:600;">X</a> ·
-      <a href="https://www.facebook.com/sharer/sharer.php?u=https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/" target="_blank" style="color:var(--gold);font-weight:600;">Facebook</a> ·
-      <a href="#" onclick="navigator.clipboard.writeText('https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/'); alert('Link kopiert. Teile es auf Instagram DM oder Story.'); return false;" style="color:var(--gold);font-weight:600;">Instagram</a>
-    `,
-    namePlaceholder: "Gib deinen Namen ein",
-    promoText: `
-🎄 Dein Weihnachtsbrief ist fertig.<br><br>
-Wenn diese Nachricht dir ein Lächeln geschenkt hat, kannst du die Magie unterstützen und Santa helfen, weiterhin Briefe auf der ganzen Welt zuzustellen.<br><br>
-<a href="https://legacybuilder35.gumroad.com/l/jgcdam" target="_blank" class="button">☕ Kaufe Santa einen Kaffee</a>
-`
-  }
-};
-
-// ===== UPDATE STATIC TEXT =====
-function updateStaticText() {
-    const lang = document.getElementById("langSelect").value;
-    document.querySelector(".year-tag").innerHTML = texts[lang].yearTag;
-    document.querySelector("h1").innerHTML = texts[lang].heading;
-    document.querySelector(".instructions").innerHTML = texts[lang].instructions;
-    document.getElementById("nameInput").placeholder = texts[lang].namePlaceholder;
-    document.querySelector(".promo").innerHTML = texts[lang].promoText;
-}
-
-document.getElementById("langSelect").addEventListener("change", updateStaticText);
-updateStaticText();
+// Solo cambio: usar myLetterBtn en lugar de box5
+const box5 = document.getElementById('myLetterBtn');
 </script>
 
 </body>
