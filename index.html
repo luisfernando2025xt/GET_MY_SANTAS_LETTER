@@ -1,0 +1,370 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SANTA'S LETTER 2025 - Premium</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#070607;
+    --gold:#f0c84b;
+    --muted:#bdbdbd;
+    --glass: rgba(255,255,255,0.03);
+  }
+
+  body{
+    margin:0;
+    background:var(--bg);
+    color:#fff;
+    font-family:"Poppins",Arial,sans-serif;
+  }
+  a{color:inherit;text-decoration:none}
+
+  .wrap{
+    max-width:1300px;
+    margin:28px auto;
+    padding:28px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:84px;
+  }
+
+  /* Responsive H1 */
+  h1{
+    font-family:"Playfair Display",serif;
+    font-weight:700;
+    font-size: clamp(44px, 7vw, 84px); /* scales between 48px and 100px */
+    color:var(--gold);
+    text-shadow:0 6px 24px rgba(240,200,75,0.08);
+    text-align:center;
+  }
+  .countdown{
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 16px rgba(240,200,75,0.25);
+}
+
+  .instructions{
+    max-width:980px;
+    text-align:center;
+    padding:34px;
+    border-radius:18px;
+    border:1px solid rgba(240,200,75,0.06);
+    font-size:clamp(16px,2vw,20px);
+    color:#e9e6e0;
+  }
+
+  .promo{
+    max-width:980px;
+    text-align:center;
+    padding:24px;
+    border-radius:18px;
+    border:1px solid rgba(240,200,75,0.06);
+    font-size:clamp(16px,1.8vw,18px);
+    color:#e9e6e0;
+    background:rgba(255,255,255,0.03);
+    margin-top:28px;
+  }
+  .promo a.button{
+    display:inline-block;
+    padding:10px 18px;
+    margin:6px;
+    background:var(--gold);
+    color:#111;
+    font-weight:700;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:clamp(14px,1.5vw,16px);
+  }
+
+  .main-boxes{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:24px;
+  }
+  .box-container{
+    position:relative;
+    width:190px;
+    height:190px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .main-box{
+    width:100%;
+    height:100%;
+    border-radius:16px;
+    border:3px solid rgba(240,200,75,0.95);
+    background: linear-gradient(145deg,#2a2a2a,#151515);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--gold);
+    font-weight:700;
+    font-size:clamp(20px,2.5vw,26px);
+    cursor:pointer;
+  }
+
+  /* Modal styles */
+  .modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:linear-gradient(180deg, rgba(0,0,0,0.72), rgba(0,0,0,0.82));
+    backdrop-filter: blur(6px);
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+  }
+  .modal.show{display:flex}
+  .viewer{
+    width:100%;
+    max-width:1180px;
+    height:84vh;
+    background:#111;
+    border-radius:16px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+  }
+  .viewer-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 22px;
+    background:linear-gradient(90deg,#0f0f0f, #141414);
+  }
+  .viewer-title{
+    font-family:"Playfair Display",serif;
+    font-size:clamp(16px,2vw,20px);
+    color:var(--gold);
+    font-weight:700;
+  }
+  .viewer-controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .open-new{
+    background:var(--glass);
+    padding:8px 12px;
+    border-radius:10px;
+    color:var(--gold);
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .close-btn{
+    cursor:pointer;
+    font-size:22px;
+    color:var(--gold);
+    padding:8px 12px;
+    border-radius:10px;
+    border:1px solid rgba(255,255,255,0.02);
+    background:transparent;
+  }
+  .viewer-body{
+    flex:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:12px;
+  }
+  .viewer-body iframe{
+    width:100%;
+    height:100%;
+    border:0;
+    background:#000;
+  }
+  .viewer-footer{
+    padding:12px 18px;
+    color:var(--muted);
+    font-size:14px;
+    border-top:1px solid rgba(255,255,255,0.02);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  /* Responsive tweaks for small screens */
+  @media(max-width:480px){
+    .box-container{width:150px;height:150px;}
+    .main-box{font-size:clamp(16px,5vw,22px);}
+    .promo a.button{padding:8px 12px;font-size:14px;}
+    .instructions{padding:20px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="year-tag">Santa in 2025</div>
+<h1>Santa´s Letter 2025</h1>
+  <div class="countdown" id="countdown"></div>
+<div class="instructions">
+  Some people are still waiting for their letter.<br>
+  Help them receive it before the Christmas magic is over.<br><br>
+
+  <strong>Share the Magic</strong><br>
+
+  <a href="#"
+     onclick="shareWhatsApp(); return false;"
+     style="color:var(--gold);font-weight:600;">WhatsApp</a>
+  ·
+  <a href="https://twitter.com/intent/tweet?text=Santa%27s%20Letter%202025%20%E2%9C%A8%20Help%20someone%20receive%20their%20letter%20before%20the%20Christmas%20magic%20is%20over.%20%F0%9F%8E%84%20https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/"
+     target="_blank" style="color:var(--gold);font-weight:600;">X</a>
+  ·
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/"
+     target="_blank" style="color:var(--gold);font-weight:600;">Facebook</a>
+  ·
+  <a href="#"
+     onclick="navigator.clipboard.writeText('https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/'); alert('Link copied. Share it on Instagram DM or Story.'); return false;"
+     style="color:var(--gold);font-weight:600;">Instagram</a>
+</div>
+
+  <div class="main-boxes">
+    <div class="box-container">
+      <div class="main-box" id="box5">🎁 My Letter</div>
+    </div>
+  </div>
+
+  <!-- Promo Section -->
+<div class="promo">
+  🎄 Your Santa letter is complete.<br><br>
+
+  If this message brought a smile or a moment of warmth, you’re welcome to support the magic and help Santa keep delivering letters around the world.<br><br>
+
+  <a href="https://legacybuilder35.gumroad.com/l/jgcdam" target="_blank" class="button">
+    ☕ Buy Santa a Coffee
+  </a>
+</div>
+
+</div>
+
+<div id="modal" class="modal" aria-hidden="true">
+  <div class="viewer">
+    <div class="viewer-header">
+      <div class="viewer-title" id="viewerTitle">Contenido</div>
+      <div class="viewer-controls">
+        <a id="viewerOpenNew" class="open-new" href="#" target="_blank" style="display:none">Open in New Tab</a>
+        <button id="closeBtn" class="close-btn">✕</button>
+      </div>
+    </div>
+    <div class="viewer-body" id="viewerBody"></div>
+    <div class="viewer-footer" id="viewerFooter"></div>
+  </div>
+</div>
+
+<script>
+const box5 = document.getElementById('box5');
+const modal = document.getElementById('modal');
+const viewerBody = document.getElementById('viewerBody');
+const viewerTitle = document.getElementById('viewerTitle');
+const viewerFooter = document.getElementById('viewerFooter');
+const viewerOpenNew = document.getElementById('viewerOpenNew');
+const closeBtn = document.getElementById('closeBtn');
+
+const box5Link = "https://luisfernando2025xt.github.io/xmas-mystery-box/";
+const box5Codes = ["ABC123","XYZ789","LMN456","PL55MN88","QW11ER22","GH12JK34","RT56UV78","YZ90AB12","CD34EF56","MN78OP90"];
+
+function getRandomCodes(){
+  const keyUser = 'box5UserCode';
+  const keyLoved = 'box5LovedCode';
+
+  let codeUser = localStorage.getItem(keyUser);
+  let codeLoved = localStorage.getItem(keyLoved);
+
+  if(!codeUser || !codeLoved){
+    let availableCodes = [...box5Codes];
+    codeUser = availableCodes.splice(Math.floor(Math.random()*availableCodes.length), 1)[0];
+    codeLoved = availableCodes[Math.floor(Math.random()*availableCodes.length)];
+    
+    localStorage.setItem(keyUser, codeUser);
+    localStorage.setItem(keyLoved, codeLoved);
+  }
+
+  return {codeUser, codeLoved};
+}
+
+box5.addEventListener('click', ()=>{
+  const {codeUser, codeLoved} = getRandomCodes();
+  openViewer({
+    title: "Your Santa Letter",
+    url: box5Link,
+    codeUser,
+    codeLoved
+  });
+});
+
+function openViewer({title,url,codeUser=null,codeLoved=null}){
+  viewerTitle.textContent = title;
+  viewerFooter.innerHTML = codeUser && codeLoved 
+    ? `Letter for You: ${codeUser} <br> Letter for Your Loved One: ${codeLoved}` 
+    : '';
+  viewerOpenNew.style.display = 'inline-block';
+  viewerOpenNew.href = url;
+  viewerBody.innerHTML = `<iframe src="${url}" allow="autoplay; fullscreen" loading="lazy"></iframe>`;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden','false');
+}
+
+closeBtn.addEventListener('click', ()=>{
+  modal.classList.remove('show');
+  viewerBody.innerHTML = '';
+  modal.setAttribute('aria-hidden','true');
+});
+
+modal.addEventListener('click', (ev)=>{
+  if(ev.target === modal){
+    modal.classList.remove('show');
+    viewerBody.innerHTML = '';
+    modal.setAttribute('aria-hidden','true');
+  }
+});
+  /* ===== COUNTDOWN CLOCK ===== */
+  const countdownEl = document.getElementById("countdown");
+  const targetDate = new Date("December 25, 2025 00:00:00").getTime();
+
+  function updateCountdown(){
+    const now = Date.now();
+    const diff = targetDate - now;
+
+    if(diff <= 0){
+      countdownEl.textContent = "🎄 Christmas is here";
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / (1000 * 60)) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    countdownEl.textContent = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+  /* ===== WHATSAPP SHARE ===== */
+  function shareWhatsApp(){
+    const link = "https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/";
+    const message = "Santa's Letter 2025 ✨ Help someone receive their letter before the Christmas magic is over 🎄\n\n" + link;
+    const encoded = encodeURIComponent(message);
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if(isMobile){
+      window.open("https://wa.me/?text=" + encoded, "_blank");
+    } else {
+      navigator.clipboard.writeText(link);
+      alert("Link copied. Share it on WhatsApp.");
+    }
+  }
+
+</script>
+</body>
+</html>
