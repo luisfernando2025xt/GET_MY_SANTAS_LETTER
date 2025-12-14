@@ -240,12 +240,10 @@
     </select>
   </div>
 
-  <div id="name-section">
-    <input type="text" id="nameInput" placeholder="Enter your name" style="padding:8px 12px; border-radius:8px; border:none; width:200px; margin-right:10px;">
-    <button onclick="startLetter()" style="padding:8px 14px; border-radius:8px; border:none; background:#f0c84b; color:#111; font-weight:600; cursor:pointer;">
-      Start Letter
-    </button>
-  </div>
+<div id="name-section">
+  <input type="text" id="nameInput" placeholder="Enter your name" style="padding:8px 12px; border-radius:8px; border:none; width:200px;">
+</div>
+
 </div>
 
   <div class="main-boxes">
@@ -312,15 +310,35 @@ function getRandomCodes(){
   return {codeUser, codeLoved};
 }
 
-box5.addEventListener('click', ()=>{
-  const {codeUser, codeLoved} = getRandomCodes();
-  openViewer({
-    title: "Your Santa Letter",
-    url: box5Link,
-    codeUser,
-    codeLoved
-  });
+box5.addEventListener('click', async ()=>{
+    const name = document.getElementById("nameInput").value.trim();
+    const lang = document.getElementById("langSelect").value;
+
+    // Pick a random letter code
+    const code = box5Codes[Math.floor(Math.random() * box5Codes.length)];
+
+    // Fetch letters.json
+    const response = await fetch('letters.json');
+    const letters = await response.json();
+
+    const letterData = letters[code];
+    if (!letterData || !letterData[lang]) {
+        alert("Sorry, this letter is not available in your language yet.");
+        return;
+    }
+
+    // Merge paragraphs and replace {name} if needed
+    const letterContent = letterData[lang].map(p => p.replace("{name}", name)).join("<br><br>");
+
+    // Show in modal
+    viewerTitle.textContent = "Your Santa Letter";
+    viewerFooter.innerHTML = `Letter Code: ${code}`;
+    viewerBody.innerHTML = letterContent;
+    viewerOpenNew.style.display = "none"; // optional: hide "open in new tab"
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
 });
+
 
 function openViewer({title,url,codeUser=null,codeLoved=null}){
   viewerTitle.textContent = title;
@@ -421,7 +439,62 @@ async function startLetter() {
   modal.setAttribute('aria-hidden', 'false');
   }
 
+  // ===== Step 1: Language map =====
+  const texts = {
+    EN: {
+      yearTag: "Santa in 2025",
+      heading: "Santa's Letter 2025",
+      instructions: `
+        Some people are still waiting for their letter.<br>
+        Help them receive it before the Christmas magic is over.<br><br>
+        <strong>Share the Magic</strong><br>
+        <a href="#" onclick="shareWhatsApp(); return false;" style="color:var(--gold);font-weight:600;">WhatsApp</a> ·
+        <a href="https://twitter.com/intent/tweet?text=Santa%27s%20Letter%202025" target="_blank" style="color:var(--gold);font-weight:600;">X</a> ·
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/" target="_blank" style="color:var(--gold);font-weight:600;">Facebook</a> ·
+        <a href="#" onclick="navigator.clipboard.writeText('https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/'); alert('Link copied. Share it on Instagram DM or Story.'); return false;" style="color:var(--gold);font-weight:600;">Instagram</a>
+      `,  // <-- COMA AQUÍ
+      namePlaceholder: "Enter your name"       // <-- agrega esta línea
+    },
+    ES: {
+      yearTag: "Santa en 2025",
+      heading: "Carta de Santa 2025",
+      instructions: `
+        Algunas personas todavía esperan su carta.<br>
+        Ayúdalos a recibirla antes de que termine la magia navideña.<br><br>
+        <strong>Comparte la Magia</strong><br>
+        <a href="#" onclick="shareWhatsApp(); return false;" style="color:var(--gold);font-weight:600;">WhatsApp</a> ·
+        <a href="https://twitter.com/intent/tweet?text=Carta%20de%20Santa%202025" target="_blank" style="color:var(--gold);font-weight:600;">X</a> ·
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/" target="_blank" style="color:var(--gold);font-weight:600;">Facebook</a> ·
+        <a href="#" onclick="navigator.clipboard.writeText('https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/'); alert('Enlace copiado. Compártelo en Instagram DM o Historia.'); return false;" style="color:var(--gold);font-weight:600;">Instagram</a>
+      `,  // <-- COMA AQUÍ
+      namePlaceholder: "Ingresa tu nombre"     // <-- agrega esta línea
+    },
+    DE: {
+      yearTag: "Weihnachtsmann 2025",
+      heading: "Brief vom Weihnachtsmann 2025",
+      instructions: `
+        Manche Leute warten noch auf ihren Brief.<br>
+        Hilf ihnen, ihn zu erhalten, bevor die Weihnachtsmagie vorbei ist.<br><br>
+        <strong>Teile die Magie</strong><br>
+        <a href="#" onclick="shareWhatsApp(); return false;" style="color:var(--gold);font-weight:600;">WhatsApp</a> ·
+        <a href="https://twitter.com/intent/tweet?text=Brief%20vom%20Weihnachtsmann%202025" target="_blank" style="color:var(--gold);font-weight:600;">X</a> ·
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/" target="_blank" style="color:var(--gold);font-weight:600;">Facebook</a> ·
+        <a href="#" onclick="navigator.clipboard.writeText('https://luisfernando2025xt.github.io/GET_MY_SANTAS_LETTER/'); alert('Link kopiert. Teile es auf Instagram DM oder Story.'); return false;" style="color:var(--gold);font-weight:600;">Instagram</a>
+      `,  // <-- COMA AQUÍ
+      namePlaceholder: "Gib deinen Namen ein"  // <-- agrega esta línea
+    }
+  };
 
+function updateStaticText() {
+    const lang = document.getElementById("langSelect").value;
+    document.querySelector(".year-tag").innerHTML = texts[lang].yearTag;
+    document.querySelector("h1").innerHTML = texts[lang].heading;
+    document.querySelector(".instructions").innerHTML = texts[lang].instructions;
+    document.getElementById("nameInput").placeholder = texts[lang].namePlaceholder; // <-- línea nueva
+}
+
+document.getElementById("langSelect").addEventListener("change", updateStaticText);
+updateStaticText();
 
   
 </script>
