@@ -386,6 +386,44 @@ modal.addEventListener('click', (ev)=>{
     }
   }
 
+// <<< ADD THIS FUNCTION HERE >>>
+async function startLetter() {
+  const name = document.getElementById("nameInput").value.trim();
+  const lang = document.getElementById("langSelect").value;
+
+  if (!name) {
+    alert("Please enter your name!");
+    return;
+  }
+
+  // Pick a random letter code
+  const box5Codes = ["ABC123","XYZ789","LMN456"];
+  const code = box5Codes[Math.floor(Math.random()*box5Codes.length)];
+
+  // Fetch letters.json
+  const response = await fetch('letters.json');
+  const letters = await response.json();
+
+  const letterData = letters[code];
+  if (!letterData || !letterData[lang]) {
+    alert("Sorry, this letter is not available in your language yet.");
+    return;
+  }
+
+  // Merge all paragraphs and replace {name} if you use it
+  const letterContent = letterData[lang].map(paragraph => paragraph.replace("{name}", name)).join("<br><br>");
+
+  // Show modal
+  viewerTitle.textContent = "Your Santa Letter";
+  viewerFooter.innerHTML = `Letter Code: ${code}`;
+  viewerBody.innerHTML = letterContent;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  }
+
+
+
+  
 </script>
 </body>
 </html>
